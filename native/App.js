@@ -1,20 +1,19 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import Home from './src/Home';
-import Jogo from './src/Jogo';
+import Home from './src/home';
+import Jogo from './src/jogo';
 
 export default function App() {
-  const [ screen, setScreen ] = useState("home");
-  const [ jogador1, setJogador1 ] = useState("");
-  const [ jogador2, setJogador2 ] = useState("");
+  const [screen, setScreen] = useState("home");
+  const [player1, setPlayer1] = useState("");
+  const [player2, setPlayer2] = useState("");
 
-  const checkScreen = (checkScreenName) => checkScreenName === screen;
+  const checkScreen = (checkScreen) => checkScreen === screen;
 
   const setJogadores = (nome1, nome2) => {
-    setJogador1(nome1);
-    setJogador2(nome2);
-
+    setPlayer1(nome1);
+    setPlayer2(nome2);
   }
 
   const changeScreen = (newScreen) => setScreen(newScreen);
@@ -22,8 +21,13 @@ export default function App() {
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
-      {screen}
-     
+      {checkScreen("home") && (
+        <Home
+          mudarNomeJogadores={setJogadores}
+          changeScreen={changeScreen}
+        />
+      )}
+      {checkScreen("jogo") && <Jogo changeScreen={changeScreen} />}
     </View>
   );
 }
@@ -31,8 +35,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: "100%",
-    backgroundColor: '#fff',
+    backgroundColor: '#98c1d9',
     alignItems: 'center',
     justifyContent: 'center',
 
