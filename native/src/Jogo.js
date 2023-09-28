@@ -3,9 +3,11 @@ import { StyleSheet, View, Text, Button } from 'react-native';
 
 export default function Jogo(props) {
 
-    const handleClick = () => {
-        props.changeScreen("Home")
+    const handleClickV = () => {
+        props.changeScreen("home")
     }
+
+
     // Botões primeira fileira
     const [b1, setB1] = useState(" ");
     const [b2, setB2] = useState(" ");
@@ -71,19 +73,24 @@ export default function Jogo(props) {
 
     return (
         <View style={styles.principal}>
-            <Text>Jogo</Text>
+            <Text style={styles.tituloVelha}> Jogo da velha </Text>
 
             <View style={styles.fileira1}>
                 <Button title={b1} onPress={handleClickB1} />
                 <Button title={b2} onPress={handleClickB2} />
                 <Button title={b3} onPress={handleClickB3} />
+            </View>
+            <View style={styles.fileira2}>
                 <Button title={b4} onPress={handleClickB4} />
                 <Button title={b5} onPress={handleClickB5} />
                 <Button title={b6} onPress={handleClickB6} />
-                <Button title={b6} onPress={handleClickB7} />
-                <Button title={b6} onPress={handleClickB8} />            </View>
+            </View>
+            <View style={styles.fileira3}>
+                <Button title={b4} onPress={handleClickB7} />
+                <Button title={b5} onPress={handleClickB8} />
                 <Button title={b6} onPress={handleClickB9} />
-            <Button title='Voltar' onPress={handleClick} />
+            </View>
+            <Button title='Voltar' onPress={handleClickV} />
         </View>
     )
 }
@@ -91,11 +98,36 @@ export default function Jogo(props) {
 const styles = StyleSheet.create({
     principal: {
         flex: 1,
-        backgroundColor: '#09f',
+        backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
+        padding: "200px"
     },
     fileira1: {
+        display: "flex",
+        flexDirection: "row",
+        padding: "2px",
+        gap: "8px"
+
+    },
+    fileira2: {
+        display: "flex",
+        flexDirection: "row",
+        padding: "2px",
+        gap: "8px"
+
+    },
+    fileira3: {
+        display: "flex",
+        flexDirection: "row",
+        padding: "2px",
+        paddingBottom: "7px",
+        gap: "8px"
+    },
+
+    tituloVelha: {
+
+        padding:"4px"
 
     }
 });

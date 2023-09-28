@@ -1,31 +1,34 @@
-import { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
+
+import { StyleSheet, Text, View, Button } from 'react-native';
 
 
 export default function Home({
-    mudarNomeJogadores,
-    changeScreen
+    changeScreen,
 }) {
 
-    const [player1, setPlayer1] = useState("");
-    const [player2, setPlayer2] = useState("");
-
     const handleClick = () => {
-        if (mudarNomeJogadores) {
-            mudarNomeJogadores(player1, player2)
-            changeScreen("jogo")
-        }
+        changeScreen("jogo")
+
+    }
+    const handleClickF = () => {
+        changeScreen("forca")
+
+    }
+
+    const handleClickM = () => {
+        changeScreen("memoria")
+
     }
 
     return (
         <View style={styles.container}>
-            <Text style={styles.text}>Jogador 1: {player1}</Text>
-            <TextInput placeholder="Player1" style={styles.input} value={player1} onChangeText={setPlayer1} />
 
-            <Text style={styles.text}>Jogador 2: {player2}</Text>
-            <TextInput placeholder="Player2" style={styles.input} value={player2} onChangeText={setPlayer2} />
+            <Text style={styles.tituloHome}> Escolha um mini-jogo </Text>
 
-            <Button title="Botao" onPress={handleClick} />
+
+            <Button title="Jogo da Velha # " onPress={handleClick} color="darkblue" />
+            <Button title="Jogo da forca 🔤" onPress={handleClickF} color="darkblue" />
+            <Button title="Jogo da memória 🎴" onPress={handleClickM} color="darkblue" />
         </View>
     );
 }
@@ -33,21 +36,17 @@ export default function Home({
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'aliceblue',
+        backgroundColor: '#98c1d9',
         alignItems: 'center',
         justifyContent: 'center',
-        width: '100%',
         gap: 20
     },
-    input: {
-        width: "80%",
-        height: 35,
-        borderStyle: "solid",
-        borderColor: "brown",
-        borderRadius: 2,
-        borderWidth: 3
+    tituloHome: {
+        backgroundColor: 'white',
+        padding: '12px',
+        borderRadius: '5px',
+        fontSize: '20px',
+        fontFamily: "Arial"
     },
-    text: {
-        fontSize: 15,
-    }
+
 });
