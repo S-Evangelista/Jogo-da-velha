@@ -5,6 +5,10 @@ import Home from './src/Home';
 import Jogo from './src/Jogo';
 import Forca from './src/Forca';
 import Memoria from './src/Memoria';
+import Inicio from './src/Inicio';
+import InicioM from './src/InicioM';
+
+
 
 
 export default function App() {
@@ -20,6 +24,16 @@ export default function App() {
       <StatusBar style="auto" />
       {checkScreen("home") && (
         <Home
+          changeScreen={changeScreen}
+        />
+      )}
+      {checkScreen("inicio") && (
+        <Inicio
+          changeScreen={changeScreen}
+        />
+      )}
+      {checkScreen("inicioM") && (
+        <InicioM
           changeScreen={changeScreen}
         />
       )}
@@ -47,7 +61,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#98c1d9',
+    backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
 

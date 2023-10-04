@@ -1,133 +1,158 @@
-import { useState } from 'react';
-import { StyleSheet, View, Text, Button } from 'react-native';
+import React, { useState } from "react";
+import { View, Text, Button, StyleSheet, TouchableOpacity } from "react-native";
 
-export default function Jogo(props) {
+const startValues = [
+    ["", "", ""],
+    ["", "", ""],
+    ["", "", ""],
+];
 
-    const handleClickV = () => {
-        props.changeScreen("home")
-    }
+export default function JogoVelha({ changeScreen, player1, player2 }) {
+    const [states, setStates] = useState(startValues);
+    const [player, setPlayer] = useState("X");
 
+    const goBack = () => {
+        changeScreen("home");
+    };
 
-    // Botões primeira fileira
-    const [b1, setB1] = useState(" ");
-    const [b2, setB2] = useState(" ");
-    const [b3, setB3] = useState(" ");
+    const checkPlayerWin = (player) => {
+        // check lines
+        for (let i = 0; i < 3; i++) {
+            if (
+                states[i][0] === player &&
+                states[i][1] === player &&
+                states[i][2] === player
+            ) {
+                return true;
+            }
+        }
+        // check columns
+        for (let i = 0; i < 3; i++) {
+            if (
+                states[0][i] === player &&
+                states[1][i] === player &&
+                states[2][i] === player
+            ) {
+                return true;
+            }
+        }
 
-    // Botões segunda fileira
-    const [b4, setB4] = useState(" ");
-    const [b5, setB5] = useState(" ");
-    const [b6, setB6] = useState(" ");
+        // check diagonals
+        if (
+            states[0][0] === player &&
+            states[1][1] === player &&
+            states[2][2] === player
+        ) {
+            return true;
+        }
+        if (
+            states[0][2] === player &&
+            states[1][1] === player &&
+            states[2][0] === player
+        ) {
+            return true;
+        }
 
-    // Botões terceira fileira
-    const [b7, setB7] = useState(" ");
-    const [b8, setB8] = useState(" ");
-    const [b9, setB9] = useState(" ");
+        return false;
+    };
 
-    // Primeira fileira
-    const handleClickB1 = (b, setb) => {
-        if (b1 === "X") {
-            setB1("O");
-        } else { setB1("X") }
-    }
-    const handleClickB2 = () => {
-        if (b2 === "X") {
-            setB2("O");
-        } else { setB2("X") }
-    }
-    const handleClickB3 = () => {
-        if (b3 === "X") {
-            setB3("O");
-        } else { setB3("X") }
-    }
-    const handleClickB4 = () => {
-        if (b4 === "X") {
-            setB4("O");
-        } else { setB4("X") }
-    }
-    const handleClickB5 = () => {
-        if (b4 === "X") {
-            setB5("O");
-        } else { setB5("X") }
-    }
-    const handleClickB6 = () => {
-        if (b6 === "X") {
-            setB6("O");
-        } else { setB6("X") }
-    }
-    const handleClickB7 = () => {
-        if (b7 === "X") {
-            setB7("O");
-        } else { setB7("X") }
-    }
-    const handleClickB8 = () => {
-        if (b8 === "X") {
-            setB8("O");
-        } else { setB8("X") }
-    }
-    const handleClickB9 = () => {
-        if (b9 === "X") {
-            setB9("O");
-        } else { setB9("X") }
-    }
+    const endPlay = (message) => {
+        alert(message);
+        setStates(startValues);
+        goBack();
+    };
 
+    const checkDraw = () => {
+        let countStates = 0;
+
+        states.forEach((line) => {
+            line.forEach((column) => {
+                if (column === "X" || column === "O") countStates++;
+            });
+        });
+
+        return countStates === 9;
+    };
+
+    const checkWin = () => {
+        if (checkPlayerWin("X")) {
+            endPlay(`O jogador ${player1} venceu!`);
+        } else if (checkPlayerWin("O")) {
+            endPlay(`O jogador ${player2} venceu!`);
+        } else if (checkDraw()) {
+            endPlay("Ninguém venceu!");
+        }
+    };
+
+    const handleClickPosition = (line, column) => {
+        if (states[line][column] !== "") {
+            return;
+        }
+
+        const newState = [...states];
+        newState[line][column] = player;
+        setStates([...newState]);
+        setPlayer(player === "X" ? "O" : "X");
+        checkWin();
+    };
+
+    const getPlayerName = () => (player === "X" ? player1 : player2);
 
     return (
-        <View style={styles.principal}>
-            <Text style={styles.tituloVelha}> Jogo da velha </Text>
+        <View style={styles.container}>
+            <Text style={styles.texto}>
+                É a vez do jogador: {getPlayerName()} - {player}
+            </Text>
 
-            <View style={styles.fileira1}>
-                <Button title={b1} onPress={handleClickB1} />
-                <Button title={b2} onPress={handleClickB2} />
-                <Button title={b3} onPress={handleClickB3} />
-            </View>
-            <View style={styles.fileira2}>
-                <Button title={b4} onPress={handleClickB4} />
-                <Button title={b5} onPress={handleClickB5} />
-                <Button title={b6} onPress={handleClickB6} />
-            </View>
-            <View style={styles.fileira3}>
-                <Button title={b4} onPress={handleClickB7} />
-                <Button title={b5} onPress={handleClickB8} />
-                <Button title={b6} onPress={handleClickB9} />
-            </View>
-            <Button title='Voltar' onPress={handleClickV} />
+            {states.map((line, indexLine) => {
+                return (
+                    <View style={styles.line} key={indexLine}>
+                        {line.map((column, indexColumn) => (
+                            <TouchableOpacity
+                                key={indexColumn}
+                                onPress={() => handleClickPosition(indexLine, indexColumn)}
+                            >
+                                <View style={styles.buttonGame}>
+                                    <Text style={styles.buttonGameFont}>{column}</Text>
+                                </View>
+                            </TouchableOpacity>
+                        ))}
+                    </View>
+                );
+            })}
+             <Button style={styles.botaoV} title="Voltar" onPress={goBack} color="green"/>
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
-    principal: {
+    line: {
+        flexDirection: "row",
+    },
+    buttonGame: {
+        backgroundColor: "#9BDCBB",
+        width: 90,
+        height: 90,
+        margin: 5,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    buttonGameFont: {
+        fontSize: 50,
+        color: "white",
+    },
+    container: {
         flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: "200px"
+        padding: 20,
+        marginTop: 200,
+        marginBottom: 200,
+        backgroundColor: "#66917C",
+        alignItems: "center",
+        justifyContent: "center",
     },
-    fileira1: {
-        display: "flex",
-        flexDirection: "row",
-        padding: "2px",
-        gap: "8px"
-
+    texto:{
+        color:'white',
+        fontStyle: "normal"
     },
-    fileira2: {
-        display: "flex",
-        flexDirection: "row",
-        padding: "2px",
-        gap: "8px"
-
-    },
-    fileira3: {
-        display: "flex",
-        flexDirection: "row",
-        padding: "2px",
-        paddingBottom: "7px",
-        gap: "8px"
-    },
-
-    tituloVelha: {
-
-        padding:"4px"
-
-    }
+   
 });
