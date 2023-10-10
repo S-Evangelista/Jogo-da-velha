@@ -11,7 +11,7 @@ export default function JogoVelha({ changeScreen, player1, player2 }) {
     const [states, setStates] = useState(startValues);
     const [player, setPlayer] = useState("X");
 
-    const goBack = () => {
+    const Voltar = () => {
         changeScreen("home");
     };
 
@@ -59,7 +59,7 @@ export default function JogoVelha({ changeScreen, player1, player2 }) {
     const endPlay = (message) => {
         alert(message);
         setStates(startValues);
-        goBack();
+        Voltar();
     };
 
     const checkDraw = () => {
@@ -76,9 +76,9 @@ export default function JogoVelha({ changeScreen, player1, player2 }) {
 
     const checkWin = () => {
         if (checkPlayerWin("X")) {
-            endPlay(`O jogador ${player1} venceu!`);
+            endPlay(`O jogador  ${player} venceu!`);
         } else if (checkPlayerWin("O")) {
-            endPlay(`O jogador ${player2} venceu!`);
+            endPlay(`O jogador  ${player} venceu!`);
         } else if (checkDraw()) {
             endPlay("Ninguém venceu!");
         }
@@ -101,7 +101,7 @@ export default function JogoVelha({ changeScreen, player1, player2 }) {
     return (
         <View style={styles.container}>
             <Text style={styles.texto}>
-                É a vez do jogador: {getPlayerName()} - {player}
+                Vez de {getPlayerName()} {player}
             </Text>
 
             {states.map((line, indexLine) => {
@@ -120,7 +120,7 @@ export default function JogoVelha({ changeScreen, player1, player2 }) {
                     </View>
                 );
             })}
-             <Button style={styles.botaoV} title="Voltar" onPress={goBack} color="green"/>
+             <Button style={styles.botaoV} title="Voltar" onPress={Voltar} color="green"/>
         </View>
     );
 }

@@ -1,45 +1,54 @@
-import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import { useState } from 'react';
+import { StyleSheet, Text, View, TextInput, Button} from 'react-native';
 
-export default function inicioM(props) {
 
-    const handleClickV = () => {
-        props.changeScreen("jogo")
+export default function InicioM({
+    InicioM,
+    changeScreen
+}) {
+
+    const [player1, setPlayer1] = useState("");
+    const [player2, setPlayer2] = useState("");
+
+    const handleClick = () => {
+        changeScreen("memoria")
     }
 
-
     return (
-        <View style={styles.principal}>
-            <Text style={styles.tituloForca}> Jogo da forca </Text>
+        <View style={styles.container}>
+            <Text style={styles.text}>Jogador 1 : {player1}</Text>
+            <TextInput placeholder=" Nome" style={styles.input} value={player1} onChangeText={setPlayer1} />
 
-            <View style={styles.fileira1}>
-                
-            </View>
-            <Button title='Voltar' onPress={handleClickV} />
+            <Text style={styles.text}>Jogador 2 : {player2}</Text>
+            <TextInput placeholder=" Nome" style={styles.input} value={player2} onChangeText={setPlayer2} />
+
+            <Button title="Jogar" onPress={handleClick} color="green"/>
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
-    principal: {
+    container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#9BDCBB',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: "200px"
+        width: '100%',
+        gap: 20
     },
-    fileira1: {
-        display: "flex",
-        flexDirection: "row",
-        padding: "2px",
-        gap: "8px"
-
+    input: {
+        width: "80%",
+        height: 35,
+        borderStyle: "solid",
+        borderColor: "green",
+        borderRadius: 2,
+        borderWidth: 3
     },
-    
-
-    tituloForca: {
-
-        padding:"4px"
-
-    }
-});
-
+    text: {
+        fontSize: 15,
+        backgroundColor:"white",
+        padding: '7px',
+        borderRadius: 4,
+        borderWidth: 3,
+        borderColor:'white'
+    }});

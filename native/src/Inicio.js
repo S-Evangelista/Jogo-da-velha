@@ -4,7 +4,6 @@ import { StyleSheet, Text, View, TextInput, Button} from 'react-native';
 
 
 export default function Inicio({
-    mudarNomeJogadores,
     changeScreen
 }) {
 
@@ -17,11 +16,11 @@ export default function Inicio({
 
     return (
         <View style={styles.container}>
-            <Text style={styles.text}>Jogador 1 : {player1}</Text>
-            <TextInput placeholder=" Jogador 1" style={styles.input} value={player1} onChangeText={setPlayer1} />
+            <Text style={styles.text}>Jogador X : {player1}</Text>
+            <TextInput placeholder=" Jogador" style={styles.input} value={player1} onChangeText={setPlayer1} />
 
-            <Text style={styles.text}>Jogador 2: {player2}</Text>
-            <TextInput placeholder=" Jogador 2" style={styles.input} value={player2} onChangeText={setPlayer2} />
+            <Text style={styles.text}>Jogador O : {player2}</Text>
+            <TextInput placeholder=" Jogador" style={styles.input} value={player2} onChangeText={setPlayer2} />
 
             <Button title="Jogar" onPress={handleClick} color="green"/>
         </View>

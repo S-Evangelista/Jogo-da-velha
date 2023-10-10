@@ -54,7 +54,7 @@ const cartas = [
     { id: 50, value: "🐬" }
 ];
 
-const embaralharArray = (array) => {
+const embaralharCartas = (array) => {
     const arrayEmbaralhado = [...array];
     for (let i = arrayEmbaralhado.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -63,22 +63,25 @@ const embaralharArray = (array) => {
     return arrayEmbaralhado;
 };
 
-const JogoMemoria = ({ mudarTela }) => {
+const JogoMemoria = (props) => {
     const [tabuleiro, setTabuleiro] = useState([]);
     const [indicesVirados, setIndicesVirados] = useState([]);
     const [paresEncontrados, setParesEncontrados] = useState([]);
+    const [jogadorVez, setJogadorVez] = useState(player1);
+    const {player1, player2} = props
 
     useEffect(() => {
+        setJogadorVez(player1)
         iniciarTabuleiro();
-    }, []);
+    }, [player1,player2]);
 
     const iniciarTabuleiro = () => {
-        const cartasEmbaralhadas = embaralharArray(cartas);
+        const cartasEmbaralhadas = embaralharCartas(cartas);
         setTabuleiro(cartasEmbaralhadas);
         setIndicesVirados([]);
         setParesEncontrados([]);
     };
-    const lidarComPressaoCarta = (indice) => {
+    const apertaCarta = (indice) => {
         if (indicesVirados.length === 2 || indicesVirados.includes(indice)) {
             return;
         }
@@ -92,10 +95,12 @@ const JogoMemoria = ({ mudarTela }) => {
                 setTimeout(() => {
                     setParesEncontrados([...paresEncontrados, tabuleiro[primeiroIndice].id, tabuleiro[segundoIndice].id]);
                     setIndicesVirados([]);
+                    setJogadorVez(jogadorVez === player1 ? player2 : player1);
                 }, 1000);
             } else {
                 setTimeout(() => {
                     setIndicesVirados([]);
+                    setJogadorVez(jogadorVez === player1 ? player2 : player1);
                 }, 1000);
             }
         }
@@ -110,7 +115,7 @@ const JogoMemoria = ({ mudarTela }) => {
             <TouchableOpacity
                 key={indice}
                 style={estiloCarta}
-                onPress={() => lidarComPressaoCarta(indice)}
+                onPress={() => apertaCarta(indice)}
                 disabled={estaVirada || indicesVirados.length === 2}
             >
                 {estaVirada && <Text style={styles.textoCarta}>{carta.value}</Text>}
@@ -130,14 +135,12 @@ const JogoMemoria = ({ mudarTela }) => {
         <View style={styles.container}>
             <Text style={styles.titulo}>Jogo da Memória</Text>
             {renderizarTabuleiro()}
-            <TouchableOpacity style={styles.botao} onPress={iniciarTabuleiro} backgroundColor="green">
-                <Text style={styles.textoBotao}>Reiniciar Jogo</Text>
-            </TouchableOpacity>
             <TouchableOpacity
                 style={styles.botao}
-                onPress={() => mudarTela("home")} backgroundColor="green">
-                <Text style={styles.textoBotao}>Voltar</Text>
+                onPress={() => changeScreen("home")}>
+                <Text style={styles.textoBotao} >Voltar</Text>
             </TouchableOpacity>
+            <Text style={styles.vez}> Jogador da vez: {jogadorVez}</Text>
         </View>
     );
 };
@@ -180,8 +183,9 @@ const styles = StyleSheet.create({
     botao: {
         marginTop: 20,
         padding: 10,
-        backgroundColor: "blue",
+        backgroundColor: "green",
         borderRadius: 5,
+        margin: 10,
     },
     textoBotao: {
         fontSize: 18,

@@ -16,7 +16,7 @@ export default function Home({
     }
 
     const handleClickM = () => {
-        changeScreen("memoria")
+        changeScreen("inicioM")
 
     }
     
