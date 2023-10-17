@@ -1,45 +1,97 @@
-import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Text, TextInput, Button, TouchableOpacity } from 'react-native';
 
-export default function Forca(props) {
+const palavras = ['banana', 'maça', 'cereja', "chinelo", "turma", "almofada", "bola", 
+"sapato", "orelha", "camiseta", "garrafa", "telefone", "microepreendedor", "zoologico", "escola", "amanha",
+"rosa", "cachorro", "gato", "violao", "gangorra", "vida", "sopa" ];
 
-    const handleClickV = () => {
+const Forca = (props) => {
+  const [palavraParaAdivinhar, setPalavraParaAdivinhar] = useState('');
+  const [palavraAdivinhada, setPalavraAdivinhada] = useState('');
+  const [tentativas, setTentativas] = useState(0);
+  const [maxTentativas] = useState(6);
+
+  useEffect(() => {
+    iniciarNovoJogo();
+  }, []);
+
+  useEffect(()=>{
+    palavraOculta()
+  },[palavraParaAdivinhar])
+
+  useEffect(()=>{
+    if(palavraAdivinhada!="" && palavraAdivinhada == palavraParaAdivinhar){
+        alert("Você ganhou")
         props.changeScreen("home")
+
     }
+  },[palavraAdivinhada])
+  
+  const obterPalavraAleatoria = (palavras) => {
+    const indiceAleatorio = Math.floor(Math.random() * palavras.length);
+    return palavras[indiceAleatorio];
+  };
 
+  const iniciarNovoJogo = () => {
+    console.log("foi")
+    const novaPalavraParaAdivinhar = obterPalavraAleatoria(palavras);
+    console.log(novaPalavraParaAdivinhar)
+    setPalavraParaAdivinhar(novaPalavraParaAdivinhar);
+  };
+  const palavraOculta = ()=>{
+    let tracinhos = palavraAdivinhada;
+    let palavra = palavraParaAdivinhar;
+    for(let i=0;i<palavra.length;i++){
+        console.log('a')
+        tracinhos = tracinhos.concat("_"); 
+    }
+    setPalavraAdivinhada(tracinhos);
+  }
 
-    return (
-        <View style={styles.principal}>
-            <Text style={styles.tituloForca}> Jogo da forca </Text>
+  const adivinharLetra = (letra) => {
+    if (palavraParaAdivinhar.includes(letra)) {
+      // Substitui quando a letra está correta
 
-            <View style={styles.fileira1}>
-                
-            </View>
-            <Button title='Voltar' onPress={handleClickV} />
-        </View>
-    )
+      const novaPalavraAdivinhada = palavraParaAdivinhar.split('');
+      const tracinho = palavraAdivinhada.split('');
+      console.log(novaPalavraAdivinhada)
+      for(let i=0;i<novaPalavraAdivinhada.length;i++){
+        if(novaPalavraAdivinhada[i] == letra){
+            tracinho[i] = letra;
+        }
+      }
+      setPalavraAdivinhada(tracinho.join(''));
+
+    } else{
+        setTentativas(tentativas + 1);
+    }
+  };
+
+  return (
+    <View>
+      <Text> Tentativas perdidas: {tentativas} / {maxTentativas}</Text>
+      <Text> {palavraAdivinhada}</Text>
+      <TextInput
+        placeholder="Digite aqui"
+        value={''}
+        onChangeText={adivinharLetra}
+      />
+      <TouchableOpacity
+                style={styles.botao}
+                onPress={() => props.changeScreen("home")}>
+                <Text style={styles.textoBotao} >Voltar</Text>
+            </TouchableOpacity>
+    </View>
+  );
 }
 
+export default Forca;
+
 const styles = StyleSheet.create({
-    principal: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: "200px"
+    botaoAdv: {
+        color: "green",
+        margin: "10px"
     },
-    fileira1: {
-        display: "flex",
-        flexDirection: "row",
-        padding: "2px",
-        gap: "8px"
 
-    },
-    
-
-    tituloForca: {
-
-        padding:"4px"
-
-    }
 });
 

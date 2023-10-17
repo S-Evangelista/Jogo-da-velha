@@ -16,7 +16,7 @@ export default function JogoVelha({ changeScreen, player1, player2 }) {
     };
 
     const checkPlayerWin = (player) => {
-        // check lines
+        // Linhas
         for (let i = 0; i < 3; i++) {
             if (
                 states[i][0] === player &&
@@ -26,7 +26,7 @@ export default function JogoVelha({ changeScreen, player1, player2 }) {
                 return true;
             }
         }
-        // check columns
+        // Colunas
         for (let i = 0; i < 3; i++) {
             if (
                 states[0][i] === player &&
@@ -37,7 +37,7 @@ export default function JogoVelha({ changeScreen, player1, player2 }) {
             }
         }
 
-        // check diagonals
+        // Diagonais
         if (
             states[0][0] === player &&
             states[1][1] === player &&
